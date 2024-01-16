@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver", "TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver\TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver.csproj", "{76DFE5B5-DB7D-423C-9A31-7B141C598B52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver.Tests", "TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver.Tests\TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver.Tests.csproj", "{0CC4B744-1E33-4C9F-B1CC-C58CF1121E8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver.Pipeline", "TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver.Pipeline\TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver.Pipeline.csproj", "{FFFF3C7C-3C14-42E2-A533-157730C49370}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{76DFE5B5-DB7D-423C-9A31-7B141C598B52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76DFE5B5-DB7D-423C-9A31-7B141C598B52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76DFE5B5-DB7D-423C-9A31-7B141C598B52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76DFE5B5-DB7D-423C-9A31-7B141C598B52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CC4B744-1E33-4C9F-B1CC-C58CF1121E8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CC4B744-1E33-4C9F-B1CC-C58CF1121E8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CC4B744-1E33-4C9F-B1CC-C58CF1121E8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CC4B744-1E33-4C9F-B1CC-C58CF1121E8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFFF3C7C-3C14-42E2-A533-157730C49370}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFFF3C7C-3C14-42E2-A533-157730C49370}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFFF3C7C-3C14-42E2-A533-157730C49370}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFFF3C7C-3C14-42E2-A533-157730C49370}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
