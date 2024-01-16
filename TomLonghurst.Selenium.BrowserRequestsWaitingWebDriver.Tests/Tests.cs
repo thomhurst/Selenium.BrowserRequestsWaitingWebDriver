@@ -51,7 +51,7 @@ public class Tests
     {
         var chromeOptions = new ChromeOptions();
         
-        chromeOptions.AddArgument("--headless");
+        chromeOptions.AddArgument("--headless=new");
         
         return new ChromeDriver(chromeOptions);
     }
