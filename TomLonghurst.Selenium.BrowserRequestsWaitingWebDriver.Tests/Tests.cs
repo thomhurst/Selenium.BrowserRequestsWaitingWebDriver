@@ -51,9 +51,10 @@ public class Tests
     {
         var chromeOptions = new ChromeOptions();
         
-        chromeOptions.AddArgument("--headless=new");
-        chromeOptions.AddArgument("--no-sandbox");
-        chromeOptions.AddArgument("--disable-setuid-sandbox");
+        //chromeOptions.AddArgument("disable-dev-shm-usage");
+        chromeOptions.AddArgument("headless=new");
+        //chromeOptions.AddArgument("no-sandbox");
+        //chromeOptions.AddArgument("disable-setuid-sandbox");
         
         return new ChromeDriver(chromeOptions);
     }
