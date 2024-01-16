@@ -29,6 +29,9 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
+      - name: Add hosts to /etc/hosts
+        run: |
+            sudo echo "127.0.0.1 localhost" | sudo tee -a /etc/hosts
       - uses: browser-actions/setup-chrome@v1
       - run: chrome --version
       - name: Run Pipeline
