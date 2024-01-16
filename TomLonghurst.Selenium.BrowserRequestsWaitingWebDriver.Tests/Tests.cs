@@ -18,7 +18,7 @@ public class Tests
     [Test, Repeat(5)]
     public void Normal_WebDriver_Doesnt_Wait_And_Update_Title()
     {
-        using var webdriver = new ChromeDriver();
+        using var webdriver = GetChromeDriver();
 
         var stopWatch = Stopwatch.StartNew();
         
@@ -34,7 +34,7 @@ public class Tests
     [Test, Repeat(5)]
     public void Wrapped_WebDriver_Does_Wait_And_Update_Title()
     {
-        using var webdriver = new ChromeDriver().WithWaitingForBrowserRequests();
+        using var webdriver = GetChromeDriver().WithWaitingForBrowserRequests();
 
         var stopWatch = Stopwatch.StartNew();
         
@@ -45,5 +45,14 @@ public class Tests
             Assert.That(webdriver.Title, Is.EqualTo("Updated!"));
             Assert.That(stopWatch.Elapsed.TotalSeconds, Is.GreaterThanOrEqualTo(5));
         });
+    }
+    
+    private static ChromeDriver GetChromeDriver()
+    {
+        var chromeOptions = new ChromeOptions();
+        
+        chromeOptions.AddArgument("--headless");
+        
+        return new ChromeDriver(chromeOptions);
     }
 }
