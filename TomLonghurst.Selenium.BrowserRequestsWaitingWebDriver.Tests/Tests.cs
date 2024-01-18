@@ -20,8 +20,6 @@ public class Tests
     public void Normal_WebDriver_Doesnt_Wait_And_Update_Title()
     {
         using var webdriver = GetChromeDriver();
-
-        var stopWatch = Stopwatch.StartNew();
         
         webdriver.Navigate().GoToUrl(Path.GetFullPath("Example.html"));
        
@@ -35,8 +33,6 @@ public class Tests
     public void Wrapped_WebDriver_Does_Wait_And_Update_Title()
     {
         using var webdriver = GetChromeDriver().WithWaitingForBrowserRequests();
-
-        var stopWatch = Stopwatch.StartNew();
         
         webdriver.Navigate().GoToUrl(Path.GetFullPath("Example.html"));
        
