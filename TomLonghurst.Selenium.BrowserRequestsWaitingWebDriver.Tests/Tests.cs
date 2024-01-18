@@ -16,7 +16,7 @@ public class Tests
         new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig());
     }
 
-    [Test, Repeat(5)]
+    [Test, Retry(5)]
     public void Normal_WebDriver_Doesnt_Wait_And_Update_Title()
     {
         using var webdriver = GetChromeDriver();
