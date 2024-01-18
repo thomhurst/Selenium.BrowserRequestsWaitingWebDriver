@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver.Extensions;
 using WebDriverManager.DriverConfigs.Impl;
@@ -26,7 +27,7 @@ public class Tests
        
         Assert.Multiple(() =>
         {
-            Assert.That(webdriver.Title, Is.EqualTo("Example"));
+            Assert.That(webdriver.FindElement(By.Id("title")).Text, Is.EqualTo("Example"));
             Assert.That(stopWatch.Elapsed.TotalSeconds, Is.LessThan(5));
         });
     }
@@ -42,7 +43,7 @@ public class Tests
        
         Assert.Multiple(() =>
         {
-            Assert.That(webdriver.Title, Is.EqualTo("Updated!"));
+            Assert.That(webdriver.FindElement(By.Id("title")).Text, Is.EqualTo("Updated!"));
             Assert.That(stopWatch.Elapsed.TotalSeconds, Is.GreaterThanOrEqualTo(5));
         });
     }
@@ -51,10 +52,7 @@ public class Tests
     {
         var chromeOptions = new ChromeOptions();
         
-        // chromeOptions.AddArgument("disable-dev-shm-usage");
         chromeOptions.AddArgument("--headless=new");
-        // chromeOptions.AddArgument("no-sandbox");
-        // chromeOptions.AddArgument("disable-setuid-sandbox");
         
         return new ChromeDriver(chromeOptions);
     }

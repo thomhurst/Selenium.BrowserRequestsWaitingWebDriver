@@ -30,7 +30,6 @@ jobs:
         with:
           dotnet-version: 8.0.x
       - uses: browser-actions/setup-chrome@v1
-      - run: chrome --version
       - name: Run Pipeline
         run: dotnet run -c Release
         working-directory: "TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver.Pipeline"
