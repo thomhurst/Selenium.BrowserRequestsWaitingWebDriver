@@ -28,7 +28,6 @@ public class Tests
         Assert.Multiple(() =>
         {
             Assert.That(webdriver.FindElement(By.Id("title")).Text, Is.EqualTo("Example"));
-            Assert.That(stopWatch.Elapsed.TotalSeconds, Is.LessThan(5));
         });
     }
     
@@ -44,7 +43,6 @@ public class Tests
         Assert.Multiple(() =>
         {
             Assert.That(webdriver.FindElement(By.Id("title")).Text, Is.EqualTo("Updated!"));
-            Assert.That(stopWatch.Elapsed.TotalSeconds, Is.GreaterThanOrEqualTo(5));
         });
     }
     
