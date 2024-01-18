@@ -16,7 +16,7 @@ public class Tests
     }
 
 #pragma warning disable NUnit1027
-    [Test, Retry(5), CancelAfter(180_000)]
+    [Test, Retry(5), CancelAfter(30_000)]
 #pragma warning restore NUnit1027
     public void Normal_WebDriver_Doesnt_Wait_And_Update_Title(CancellationToken cancellationToken)
     {
@@ -33,7 +33,7 @@ public class Tests
     }
     
 #pragma warning disable NUnit1027
-    [Test, Repeat(5), CancelAfter(180_000)]
+    [Test, Repeat(5), CancelAfter(30_000)]
 #pragma warning restore NUnit1027
     public void Wrapped_WebDriver_Does_Wait_And_Update_Title(CancellationToken cancellationToken)
     {
