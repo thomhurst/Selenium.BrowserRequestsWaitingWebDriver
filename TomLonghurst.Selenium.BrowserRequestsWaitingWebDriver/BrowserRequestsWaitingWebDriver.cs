@@ -10,6 +10,8 @@ namespace TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver
     {
         private readonly TimeSpan? _timeout;
         private int _pendingRequests;
+
+        private readonly object locker = new object();
         
         public BrowserRequestsWaitingWebDriver(IWebDriver parentDriver, TimeSpan? timeout = null) 
             : base(parentDriver ?? throw new ArgumentNullException(nameof(parentDriver)))
@@ -20,12 +22,18 @@ namespace TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver
 
             network.NetworkRequestSent += (sender, args) =>
             {
-                Interlocked.Increment(ref _pendingRequests);
+                lock (locker)
+                {
+                    _pendingRequests++;
+                }
             };
             
             network.NetworkResponseReceived += (sender, args) =>
             {
-                Interlocked.Decrement(ref _pendingRequests);
+                lock (locker)
+                {
+                    _pendingRequests--;
+                }
             };
 
             Navigating += (sender, args) => WaitForBrowserRequestsToComplete();
@@ -58,13 +66,22 @@ namespace TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver
         {
             var timeout = _timeout ?? WrappedDriver.Manage().Timeouts().PageLoad;
 
-            var wait = new WebDriverWait(WrappedDriver, timeout)
+            for (var i = 0; i < 3; i++)
             {
-                Message = $"Browser requests did not finish within {timeout.TotalSeconds} seconds",
-                Timeout = timeout
-            };
+                var wait = new WebDriverWait(WrappedDriver, timeout)
+                {
+                    Message = $"Browser requests did not finish within {timeout.TotalSeconds} seconds",
+                    Timeout = timeout
+                };
 
-            wait.Until(_ => Thread.VolatileRead(ref _pendingRequests) == 0);
+                wait.Until(_ =>
+                {
+                    lock (locker)
+                    {
+                        return _pendingRequests == 0;
+                    }
+                });
+            }
         }
     }
 }
