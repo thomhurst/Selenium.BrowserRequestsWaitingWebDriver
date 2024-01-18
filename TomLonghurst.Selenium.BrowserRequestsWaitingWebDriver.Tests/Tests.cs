@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver.Extensions;
@@ -16,10 +15,14 @@ public class Tests
         new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig());
     }
 
-    [Test, Retry(5)]
-    public void Normal_WebDriver_Doesnt_Wait_And_Update_Title()
+#pragma warning disable NUnit1027
+    [Test, Retry(5), CancelAfter(180_000)]
+#pragma warning restore NUnit1027
+    public void Normal_WebDriver_Doesnt_Wait_And_Update_Title(CancellationToken cancellationToken)
     {
         using var webdriver = GetChromeDriver();
+
+        cancellationToken.Register(() => webdriver.Quit());
         
         webdriver.Navigate().GoToUrl(Path.GetFullPath("Example.html"));
        
@@ -29,10 +32,14 @@ public class Tests
         });
     }
     
-    [Test, Repeat(5)]
-    public void Wrapped_WebDriver_Does_Wait_And_Update_Title()
+#pragma warning disable NUnit1027
+    [Test, Repeat(5), CancelAfter(180_000)]
+#pragma warning restore NUnit1027
+    public void Wrapped_WebDriver_Does_Wait_And_Update_Title(CancellationToken cancellationToken)
     {
         using var webdriver = GetChromeDriver().WithWaitingForBrowserRequests();
+        
+        cancellationToken.Register(() => webdriver.Quit());
         
         webdriver.Navigate().GoToUrl(Path.GetFullPath("Example.html"));
        
