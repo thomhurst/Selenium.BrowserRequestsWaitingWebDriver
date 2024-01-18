@@ -28,12 +28,18 @@ namespace TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver
                 Interlocked.Decrement(ref _pendingRequests);
             };
 
+            Navigating += (sender, args) => WaitForBrowserRequestsToComplete();
             Navigated += (sender, args) => WaitForBrowserRequestsToComplete();
             NavigatedBack += (sender, args) => WaitForBrowserRequestsToComplete();
             NavigatedForward += (sender, args) => WaitForBrowserRequestsToComplete();
             
             FindingElement += (sender, args) => WaitForBrowserRequestsToComplete();
+            FindElementCompleted += (sender, args) => WaitForBrowserRequestsToComplete();
+            
+            ElementClicking += (sender, args) => WaitForBrowserRequestsToComplete();
             ElementClicked += (sender, args) => WaitForBrowserRequestsToComplete();
+
+            ElementValueChanging += (sender, args) => WaitForBrowserRequestsToComplete();
             ElementValueChanged += (sender, args) => WaitForBrowserRequestsToComplete();
             
             ScriptExecuting += (sender, args) => WaitForBrowserRequestsToComplete();
