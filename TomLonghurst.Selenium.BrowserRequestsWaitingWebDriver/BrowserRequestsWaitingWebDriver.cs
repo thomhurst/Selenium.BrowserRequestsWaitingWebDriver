@@ -11,7 +11,7 @@ namespace TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver
         private readonly TimeSpan? _timeout;
         private int _pendingRequests;
 
-        private readonly object locker = new object();
+        private readonly object _locker = new object();
         
         public BrowserRequestsWaitingWebDriver(IWebDriver parentDriver, TimeSpan? timeout = null) 
             : base(parentDriver ?? throw new ArgumentNullException(nameof(parentDriver)))
@@ -22,7 +22,7 @@ namespace TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver
 
             network.NetworkRequestSent += (sender, args) =>
             {
-                lock (locker)
+                lock (_locker)
                 {
                     _pendingRequests++;
                 }
@@ -30,7 +30,7 @@ namespace TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver
             
             network.NetworkResponseReceived += (sender, args) =>
             {
-                lock (locker)
+                lock (_locker)
                 {
                     _pendingRequests--;
                 }
@@ -76,7 +76,7 @@ namespace TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver
 
                 wait.Until(_ =>
                 {
-                    lock (locker)
+                    lock (_locker)
                     {
                         return _pendingRequests == 0;
                     }
