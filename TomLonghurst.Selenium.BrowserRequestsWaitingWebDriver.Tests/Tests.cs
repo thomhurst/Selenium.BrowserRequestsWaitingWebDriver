@@ -6,7 +6,7 @@ using WebDriverManager.DriverConfigs.Impl;
 namespace TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver.Tests;
 
 [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
-[Parallelizable(ParallelScope.All)]
+[Parallelizable(ParallelScope.None)]
 public class Tests
 {
     [OneTimeSetUp]
@@ -14,10 +14,8 @@ public class Tests
     {
         new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig());
     }
-
-#pragma warning disable NUnit1027
+    
     [Test, Retry(5), CancelAfter(30_000)]
-#pragma warning restore NUnit1027
     public void Normal_WebDriver_Doesnt_Wait_And_Update_Title(CancellationToken cancellationToken)
     {
         using var webdriver = GetChromeDriver();
@@ -32,9 +30,7 @@ public class Tests
         });
     }
     
-#pragma warning disable NUnit1027
     [Test, Repeat(5), CancelAfter(30_000)]
-#pragma warning restore NUnit1027
     public void Wrapped_WebDriver_Does_Wait_And_Update_Title(CancellationToken cancellationToken)
     {
         using var webdriver = GetChromeDriver().WithWaitingForBrowserRequests();
