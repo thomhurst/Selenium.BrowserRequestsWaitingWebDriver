@@ -51,10 +51,6 @@ public class Tests
         var options = new ChromeOptions();
         
         options.AddArgument("--headless=new");
-        options.AddArgument("--disable-dev-shm-usage");
-        options.AddArgument("--disable-extensions");
-        options.AddArgument("--disable-gpu");
-        options.AddArgument("--no-sandbox");
 
         lock (GetChromeDriverLock)
         {
