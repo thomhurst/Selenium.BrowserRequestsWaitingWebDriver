@@ -6,7 +6,7 @@ using WebDriverManager.DriverConfigs.Impl;
 namespace TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver.Tests;
 
 [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
-[Parallelizable(ParallelScope.None)]
+[Parallelizable(ParallelScope.All)]
 public class Tests
 {
     [OneTimeSetUp]
@@ -44,13 +44,21 @@ public class Tests
             Assert.That(webdriver.FindElement(By.Id("title")).Text, Is.EqualTo("Updated!"));
         });
     }
-    
+
+    private static readonly object GetChromeDriverLock = new();
     private static ChromeDriver GetChromeDriver()
     {
-        var chromeOptions = new ChromeOptions();
+        var options = new ChromeOptions();
         
-        chromeOptions.AddArgument("--headless=new");
-        
-        return new ChromeDriver(chromeOptions);
+        options.AddArgument("--headless=new");
+        options.AddArgument("--disable-dev-shm-usage");
+        options.AddArgument("--disable-extensions");
+        options.AddArgument("--disable-gpu");
+        options.AddArgument("--no-sandbox");
+
+        lock (GetChromeDriverLock)
+        {
+            return new ChromeDriver(options);
+        }
     }
 }
