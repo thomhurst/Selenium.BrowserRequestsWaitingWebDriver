@@ -10,6 +10,8 @@ namespace TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver.Pipeline.Modules
 
 public class RunUnitTestsModule : Module<List<DotNetTestResult>>
 {
+    protected override TimeSpan Timeout => TimeSpan.FromMinutes(5);
+
     protected override async Task<List<DotNetTestResult>?> ExecuteAsync(IPipelineContext context, CancellationToken cancellationToken)
     {
         var results = new List<DotNetTestResult>();
