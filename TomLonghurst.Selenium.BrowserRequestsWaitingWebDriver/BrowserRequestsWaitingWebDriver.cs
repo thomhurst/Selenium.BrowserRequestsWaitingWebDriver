@@ -9,17 +9,19 @@ namespace TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver
     {
         private readonly TimeSpan? _timeout;
         private int _pendingRequests;
+        private bool _isDisposed;
 
         private readonly object _locker = new object();
-        
+        private readonly INetwork _network;
+
         public BrowserRequestsWaitingWebDriver(IWebDriver parentDriver, TimeSpan? timeout = null) 
             : base(parentDriver ?? throw new ArgumentNullException(nameof(parentDriver)))
         {
             _timeout = timeout;
             
-            var network = parentDriver.Manage().Network;
+            _network = parentDriver.Manage().Network;
 
-            network.NetworkRequestSent += (sender, args) =>
+            _network.NetworkRequestSent += (sender, args) =>
             {
                 lock (_locker)
                 {
@@ -27,7 +29,7 @@ namespace TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver
                 }
             };
             
-            network.NetworkResponseReceived += (sender, args) =>
+            _network.NetworkResponseReceived += (sender, args) =>
             {
                 lock (_locker)
                 {
@@ -52,17 +54,31 @@ namespace TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver
             ScriptExecuting += (sender, args) => WaitForBrowserRequestsToComplete();
             ScriptExecuted += (sender, args) => WaitForBrowserRequestsToComplete();
             
-            network.StartMonitoring();
+            _network.StartMonitoring();
         }
 
         ~BrowserRequestsWaitingWebDriver()
         {
-            Dispose();
+            Dispose(false);
             GC.SuppressFinalize(this);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _isDisposed = true;
+
+            _network.StopMonitoring();
+            
+            base.Dispose(disposing);
         }
 
         private void WaitForBrowserRequestsToComplete()
         {
+            if (_isDisposed)
+            {
+                return;
+            }
+            
             var timeout = _timeout ?? WrappedDriver.Manage().Timeouts().PageLoad;
 
             for (var i = 0; i < 3; i++)
