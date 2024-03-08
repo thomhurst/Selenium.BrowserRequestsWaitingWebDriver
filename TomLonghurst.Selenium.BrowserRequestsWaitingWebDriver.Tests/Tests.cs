@@ -50,7 +50,7 @@ public class Tests
     {
         var options = new ChromeOptions();
         
-        options.AddArgument("--headless=new");
+        options.AddArgument("--headless=old");
 
         lock (GetChromeDriverLock)
         {
