@@ -78,24 +78,31 @@ namespace TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver
             {
                 return;
             }
-            
-            var timeout = _timeout ?? WrappedDriver.Manage().Timeouts().PageLoad;
 
-            for (var i = 0; i < 3; i++)
+            try
             {
-                var wait = new WebDriverWait(WrappedDriver, timeout)
-                {
-                    Message = $"Browser requests did not finish within {timeout.TotalSeconds} seconds",
-                    Timeout = timeout
-                };
+                var timeout = _timeout ?? WrappedDriver.Manage().Timeouts().PageLoad;
 
-                wait.Until(_ =>
+                for (var i = 0; i < 3; i++)
                 {
-                    lock (_locker)
+                    var wait = new WebDriverWait(WrappedDriver, timeout)
                     {
-                        return _pendingRequests == 0;
-                    }
-                });
+                        Message = $"Browser requests did not finish within {timeout.TotalSeconds} seconds",
+                        Timeout = timeout
+                    };
+
+                    wait.Until(_ =>
+                    {
+                        lock (_locker)
+                        {
+                            return _pendingRequests == 0;
+                        }
+                    });
+                }
+            }
+            catch
+            {
+                // ignored
             }
         }
     }
