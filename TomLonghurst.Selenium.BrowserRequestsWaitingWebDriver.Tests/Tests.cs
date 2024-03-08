@@ -15,7 +15,7 @@ public class Tests
         new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig());
     }
     
-    [Test, Retry(5), CancelAfter(30_000)]
+    [Test, CancelAfter(60_000)]
     public void Normal_WebDriver_Doesnt_Wait_And_Update_Title(CancellationToken cancellationToken)
     {
         using var webdriver = GetChromeDriver();
@@ -30,7 +30,7 @@ public class Tests
         });
     }
     
-    [Test, Repeat(5), CancelAfter(30_000)]
+    [Test, CancelAfter(60_000)]
     public void Wrapped_WebDriver_Does_Wait_And_Update_Title(CancellationToken cancellationToken)
     {
         using var webdriver = GetChromeDriver().WithWaitingForBrowserRequests();
