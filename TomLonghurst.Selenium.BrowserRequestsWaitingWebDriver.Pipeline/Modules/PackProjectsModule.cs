@@ -23,12 +23,13 @@ public class PackProjectsModule : Module<List<CommandResult>>
         foreach (var projectFile in projectFiles)
         {
             results.Add(await context.DotNet().Pack(new DotNetPackOptions { 
-                TargetPath = projectFile.Path, 
+                ProjectSolution = projectFile.Path, 
                 Configuration = Configuration.Release, 
-                Properties = new[]
-                {
-                    $"PackageVersion={packageVersion.Value}", $"Version={packageVersion.Value}", 
-                },
+                Properties = 
+                [
+                    new KeyValue("PackageVersion", packageVersion.Value!), 
+                    new KeyValue("Version", packageVersion.Value!), 
+                ],
                 IncludeSource = true
             }, cancellationToken));
         }
