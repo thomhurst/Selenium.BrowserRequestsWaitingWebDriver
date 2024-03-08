@@ -19,11 +19,10 @@ public class Tests
     public void Normal_WebDriver_Doesnt_Wait_And_Update_Title(CancellationToken cancellationToken)
     {
         using var webdriver = GetChromeDriver();
-
-        cancellationToken.Register(() => throw new TimeoutException());
         
         webdriver.Navigate().GoToUrl(Path.GetFullPath("Example.html"));
-       
+        webdriver.FindElement(By.Id("button")).Click();
+
         Assert.Multiple(() =>
         {
             Assert.That(webdriver.FindElement(By.Id("title")).Text, Is.EqualTo("Example"));
@@ -35,9 +34,8 @@ public class Tests
     {
         using var webdriver = GetChromeDriver().WithWaitingForBrowserRequests();
         
-        cancellationToken.Register(() => throw new TimeoutException());
-        
         webdriver.Navigate().GoToUrl(Path.GetFullPath("Example.html"));
+        webdriver.FindElement(By.Id("button")).Click();
        
         Assert.Multiple(() =>
         {

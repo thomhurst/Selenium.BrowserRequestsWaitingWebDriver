@@ -6,10 +6,13 @@
 </head>
 <body>
 <h1 id="title">Example</h1>
+<button id="button">Click</button>
 <script type="text/javascript">
-    fetch('https://hub.dummyapis.com/delay?seconds=15')
-        .then(value => document.getElementById('title').textContent = 'Updated!')
-        .catch(value => document.getElementById('title').textContent = 'Updated!')
+    document.getElementById("button").addEventListener("click", ev => {
+        fetch('https://httpbin.org/delay/10')
+            .then(value => document.getElementById('title').textContent = 'Updated!')
+            .catch(value => document.getElementById('title').textContent = 'Updated!')  
+    })
 </script>
 </body>
 </html>
