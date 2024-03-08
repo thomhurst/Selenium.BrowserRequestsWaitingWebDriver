@@ -55,12 +55,6 @@ namespace TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver
             network.StartMonitoring();
         }
 
-        ~BrowserRequestsWaitingWebDriver()
-        {
-            Dispose();
-            GC.SuppressFinalize(this);
-        }
-
         private void WaitForBrowserRequestsToComplete()
         {
             var timeout = _timeout ?? WrappedDriver.Manage().Timeouts().PageLoad;
