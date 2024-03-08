@@ -20,7 +20,7 @@ public class Tests
     {
         using var webdriver = GetChromeDriver();
 
-        cancellationToken.Register(() => webdriver.Quit());
+        cancellationToken.Register(() => throw new TimeoutException());
         
         webdriver.Navigate().GoToUrl(Path.GetFullPath("Example.html"));
        
@@ -35,7 +35,7 @@ public class Tests
     {
         using var webdriver = GetChromeDriver().WithWaitingForBrowserRequests();
         
-        cancellationToken.Register(() => webdriver.Quit());
+        cancellationToken.Register(() => throw new TimeoutException());
         
         webdriver.Navigate().GoToUrl(Path.GetFullPath("Example.html"));
        
