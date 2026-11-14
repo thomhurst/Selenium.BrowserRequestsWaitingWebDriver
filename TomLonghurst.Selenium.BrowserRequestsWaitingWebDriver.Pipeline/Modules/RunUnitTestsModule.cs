@@ -1,30 +1,33 @@
+using ModularPipelines;
 using ModularPipelines.Context;
-using ModularPipelines.DotNet;
-using ModularPipelines.DotNet.Extensions;
 using ModularPipelines.DotNet.Options;
-using ModularPipelines.Enums;
-using ModularPipelines.Git.Extensions;
-using ModularPipelines.Models;
-using ModularPipelines.Modules;
+using ModularPipelines.Options;
 
 namespace TomLonghurst.Selenium.BrowserRequestsWaitingWebDriver.Pipeline.Modules;
 
 public class RunUnitTestsModule : Module<List<CommandResult>>
 {
-    protected override TimeSpan Timeout => TimeSpan.FromMinutes(5);
+    protected override void Configure(ModuleConfigurationBuilder module) => module
+        .WithTimeout(TimeSpan.FromMinutes(5));
 
-    protected override async Task<List<CommandResult>?> ExecuteAsync(IPipelineContext context, CancellationToken cancellationToken)
+    protected override async Task<List<CommandResult>> ExecuteAsync(IModuleContext context, CancellationToken cancellationToken)
     {
         var results = new List<CommandResult>();
+        var git = await context.Tools.Git.Information.GetRequiredInfoAsync(cancellationToken);
 
-        foreach (var unitTestProjectFile in context
-                     .Git().RootDirectory!
+        foreach (var unitTestProjectFile in git.Root
                      .GetFiles(file => file.Path.EndsWith("Tests.csproj", StringComparison.OrdinalIgnoreCase)))
         {
-            results.Add(await context.DotNet().Test(new DotNetTestOptions
+            results.Add(await context.Tools.DotNet.TestVstestAsync(new DotNetTestVstestOptions
             {
-                ProjectSolutionDirectoryDllExe = unitTestProjectFile.Path,
-                CommandLogging = CommandLogging.Input | CommandLogging.Error,
+                ProjectSolution = unitTestProjectFile.Path,
+            }, new CommandExecutionOptions
+            {
+                Logging = new CommandLoggingOptions
+                {
+                    Verbosity = CommandLogVerbosity.InputOnly,
+                    ShowStandardError = true,
+                },
             }, cancellationToken));
         }
 
